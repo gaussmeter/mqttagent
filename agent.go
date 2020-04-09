@@ -71,7 +71,7 @@ func NewAgent(host string, clientID string) (a *Agent) {
 		log.WithField("error", err).Info("Lost connection")
 	}
 	opts.OnConnect = func(c mqtt.Client) {
-		log.Info("Connect")
+		log.WithFields(log.Fields{"broker": host, "clientId":a.clientID}).Info("Connect")
 
 		//Subscribe here, otherwise after connection lost,
 		//you may not receive any message
