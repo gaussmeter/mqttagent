@@ -58,7 +58,7 @@ func (a *Agent) Publish(topic string, retain bool, payload string) (err error) {
 }
 
 // NewAgent creates an agent
-func NewAgent(host string, clientID string) (a *Agent) {
+func NewAgent(host string, clientID string, user string, pass string) (a *Agent) {
 	a = &Agent{}
 	a.clientID = clientID
 
@@ -67,6 +67,12 @@ func NewAgent(host string, clientID string) (a *Agent) {
 	opts := mqtt.NewClientOptions().AddBroker(host).SetClientID(clientID)
 	opts.SetKeepAlive(5 * time.Second)
 	opts.SetPingTimeout(5 * time.Second)
+	if user != "" {
+		opts.SetUsername(user)
+	}
+	if pass != "" {
+		opts.SetPassword(pass)
+	}
 	opts.OnConnectionLost = func(c mqtt.Client, err error) {
 		log.WithField("error", err).Info("Lost connection")
 	}
